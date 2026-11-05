@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>🌟 Tangkap Bintang — Single & Dual Player (Kamera Web)</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%20%220%22%20100%22%20100%22><text y=%22.9em%22 font-size=%2290%22>⭐</text></svg>">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- Google MediaPipe Hands, Camera Utils & Drawing Utils -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+</head>
+<body class="bg-slate-950 text-slate-100 flex flex-col h-screen w-screen overflow-hidden select-none">
+
+  <!-- Suapan Video Kamera (Disembunyikan, dilukis secara cermin pada Canvas) -->
+  <video id="webcamVideo" class="hidden" playsinline autoplay muted></video>
+
+  <!-- Canvas Utama Permainan -->
+  <canvas id="gameCanvas"></canvas>
+
+  <!-- Bar Kawalan Atas (Glassmorphism HUD) -->
+  <header class="absolute top-4 left-4 right-4 z-20 flex items-center justify-between pointer-events-none">
+    <!-- Logo & Tajuk -->
+    <div class="glass-panel px-4 py-2 rounded-2xl flex items-center space-x-3 pointer-events-auto shadow-lg">
+      <span class="text-2xl animate-spin" style="animation-duration: 8s;">⭐</span>
+      <div>
+        <h1 class="font-extrabold text-lg text-amber-300 tracking-wide leading-tight">Tangkap Bintang</h1>
+        <p class="text-xs text-slate-400 font-medium">100% Kawalan Kamera Web</p>
+      </div>
+    </div>
+
+    <!-- Pilihan Mod & Status Pantas -->
+    <div class="flex items-center space-x-2 pointer-events-auto">
+      <div id="cameraStatus" class="glass-panel text-xs font-semibold px-3 py-2 rounded-xl text-slate-300 flex items-center shadow-lg">
+        <span class="inline-block w-2.5 h-2.5 rounded-full bg-amber-400 animate-ping mr-2"></span>Menghubung Kamera...
+      </div>
+
+      <!-- Tukar Single / Dual Player -->
+      <button id="playerModeBtn" class="glass-btn text-xs font-bold px-3.5 py-2 rounded-xl text-amber-300 border-amber-400/40 flex items-center shadow-lg cursor-pointer">
+        👤 1 Pemain (2 Tangan)
+      </button>
+
+      <!-- Tukar Masa / Survival -->
+      <button id="modeBtn" class="glass-btn text-xs font-semibold px-3 py-2 rounded-xl text-sky-200 flex items-center shadow-lg cursor-pointer">
+        ⏱️ 60 Saat
+      </button>
+
+      <!-- Bunyi -->
+      <button id="muteBtn" class="glass-btn text-xs font-semibold px-3 py-2 rounded-xl text-slate-200 flex items-center shadow-lg cursor-pointer">
+        🔊 Bunyi
+      </button>
+
+      <!-- Skrin Penuh -->
+      <button id="fullscreenBtn" class="glass-btn text-xs font-semibold px-3 py-2 rounded-xl text-slate-200 flex items-center shadow-lg cursor-pointer">
+        ⛶ Penuh
+      </button>
+    </div>
+  </header>
+
+  <!-- Kotak Notifikasi / Toast -->
+  <div id="toastNotification" class="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-30 bg-slate-900/95 border border-sky-400/40 text-sky-200 px-5 py-2.5 rounded-full text-sm font-semibold shadow-2xl backdrop-blur-md opacity-0 pointer-events-none transition-all duration-300">
+    🚀 Permainan ini 100% menggunakan kamera web! Tiada papan kekunci.
+  </div>
+
+  <!-- Modal Izin Kamera (Jika belum dibenarkan) -->
+  <div id="permissionModal" class="hidden absolute inset-0 z-40 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-sky-500/30 rounded-3xl p-8 max-w-md w-full text-center shadow-2xl">
+      <div class="w-16 h-16 bg-sky-500/10 border border-sky-400/30 rounded-2xl flex items-center justify-center mx-auto mb-4 text-3xl">
+        📹
+      </div>
+      <h2 class="text-2xl font-black text-amber-300 mb-2">Benarkan Akses Kamera</h2>
+      <p class="text-slate-300 text-sm mb-6 leading-relaxed">
+        Permainan <strong>Tangkap Bintang</strong> memerlukan kamera web untuk mengesan pergerakan tangan anda secara interaktif. Tiada data video direkod atau dihantar ke mana-mana pelayan luar.
+      </p>
+      <button id="allowCameraBtn" class="w-full bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white font-bold py-3.5 px-6 rounded-2xl shadow-lg shadow-sky-500/25 transition-all transform active:scale-95 cursor-pointer">
+        Aktifkan Kamera Sekarang
+      </button>
+    </div>
+  </div>
+
+  <!-- Skrip Permainan -->
+  <script src="js/audio.js"></script>
+  <script src="js/particles.js"></script>
+  <script src="js/stars.js"></script>
+  <script src="js/tracker.js"></script>
+  <script src="js/game.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
